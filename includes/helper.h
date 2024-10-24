@@ -1,0 +1,189 @@
+#ifndef HELPER_H
+# define HELPER_H
+
+#include "struct.h"
+
+
+
+//PARSE THINGS :
+/********************************************/
+
+int is_special(char s);
+int get_next_quote(char *s,int i);
+char **fr9_trb7(char *s);
+
+
+int dstr_len(char **s);
+int _check_tokens(char **tokens);
+
+
+/****************************************** */
+
+//PARSING SUB SHELL:
+
+/********************************************/
+
+int check_tok_sub(char **tokens);
+
+/****************************************** */
+
+//TOOLS ABT WHITE SPACES
+/***************************** */
+
+int is_white(int c);
+int is_white_str(char *s);
+int is_full_white_str(char *s);
+
+/****************************** */
+
+
+// char *cmd_line(char **tokens);
+
+
+//CONSTRACTORS :
+/***************************************************/
+
+t_cmd *init_sub(t_cmd *root_sub, t_env **myenv, t_red *redirect, t_herdoc *herdoc);
+t_cmd *init_or(t_cmd *left, t_cmd *right);
+t_cmd *init_and(t_cmd *left, t_cmd *right);
+t_cmd *init_pipe(t_cmd *left, t_cmd *right);
+// t_cmd *init_exec(int tp, char *s, char **env);
+// t_cmd *init_new_cmd(char **argv, t_env *myenv,t_red *redirect, t_herdoc *herdoc);
+
+/****************************************************/
+
+//CONSTRACTORS TOOLS:
+/***********************************************/
+// void herdoc_content(t_cmd *herd);
+t_cmd *init_redire(t_cmd *cmd, char *file , int mode, int fd);
+t_cmd *init_herdoc(t_cmd *cmd, char *deliminater);
+t_red *get_red(char **tokens, int i,  t_herdoc *herdoc);
+t_red *get_red_for_sub(char **tokens, int i);
+t_red *creat_red_lst(char **tokens, int i);
+
+
+/***********************************************/
+
+
+
+
+int get_next_parenties_d(char **s, int i);
+
+char **tokens(char *str);
+int _check_str(char *s);
+int check_qoutes(char *s);
+// t_cmd *root(char **tokens, t_env **env);
+
+void print_tree(t_cmd *res);
+// void print_tree(t_cmd *res, int level);
+int which_one(char *s);
+// int skip_nonspaces(char *str, int i);
+//  char *ft_substr(char *str, int start, int end)
+
+
+//new  MODIFICATION :
+int get_type(char **tokens, int i);
+int get_mode(char **tokens, int i);
+// t_red *get_red(char **tokens, int i);
+// t_red *get_red(char **tokens, int i, int *herdoc_pipe);
+char *cmd_line(char **tokens, int *x);
+// t_cmd *init_new_cmd(char *argv, char **env, t_red *redirect);
+// t_cmd *init_new_cmd(char **argv, t_env *myenv,t_red *redirect, int herdoc_pipe);
+t_cmd *init_new_cmd(char **argv, t_env **myenv,t_red *redirect, t_herdoc *herdoc);
+void add_to_lst(t_red *red_lst, char **tokens, int i);
+t_red *creat_red_lst(char **tokens, int i);
+// t_cmd *parse_new_exec(char **tokens, int *i, t_env **myenv);
+void add_to_lst(t_red *red_lst, char **tokens, int i);
+
+//PARSE AST NODES:
+/********************************************************** */
+t_cmd *root(char **tokens, t_env **env);
+t_cmd *parse_new_exec(char **tokens, int *i, t_env **myenv);
+t_cmd *parse_pipe_loop(char **tokens, int *i, t_env **myenv);
+t_cmd *parse_and_or(char **tokens, int *i, t_env **myenv);
+struct cmd *parse_pipe_rec(char **tokens, int *i, t_env **myenv);
+t_cmd *parse_sub(char **tokens, int *i,t_env **myenv);
+/************************************************************** */
+
+//new EXEC
+/************************************ */
+
+int exec_sub_sh(t_cmd * cmd, int *last_status);
+int exec_or(t_cmd * cmd, int *last_status);
+int exec_and(t_cmd * cmd, int *last_status);
+int new_exec(t_cmd * cmd, int ref, int *last_status);
+// int new_exec(t_cmd *cmd);
+int exec_pipe(t_cmd * cmd, int *last_status);
+int execute_pipe (t_cmd * cmd, int *last_status);
+int recursion_pipe(t_cmd * cmd, int *last_status);
+int exec_new_cmd(t_cmd * cmd, int *last_status);
+/************************************ */
+
+//SIGNALS
+/************************************** */
+void do_nothing(int signal);
+void	signal_handler(int signal);
+/**************************************** */
+
+
+//HERDOC 
+/*************************************************** */
+int get_herdoc(char **tokens,int i, t_herdoc *herdoc);
+t_del *first_del(t_del *node, char *value);
+t_del *add(t_del *node, char *value);
+void print_del(t_del *head);
+/****************************************************** */
+
+
+
+//ALWAYS FREE
+/********************************** */
+
+void free_delimiters(t_del *head);
+void free_tree2(t_cmd *cmd);
+void free_mynigga(char **str);
+// void free_tree(t_cmd *cmd);
+
+/************************************* */
+
+//ERROR
+/****************** */
+void error(char *s, int er_num);
+/************************ */
+
+
+/*************************************** */
+// WILDCARD THINGS :
+/**************************************** */
+
+
+/************************************** */
+// SIMPLE CHECK DIR AND SORT OUTPUT
+/*************************************** */
+void ft_swap_str(char **s1,char **s2);
+int get_len_of_dir(char *dir_name);
+char **all_dir_sorted(char *dir_name);
+int need_a_sort(char *a, char *b);
+int is_it_sorted(char **dir);
+void just_sort(char **dir);
+
+/*************************** */
+// CONVERT THE ARRAY TO A LIST WITH MORE INFOS:
+/*************************** */
+t_dir_cont *array_to_lst_dir(char **av, char *work_dir);
+t_globing *add_glob_node(t_globing *head, t_globing *new);
+t_globing *create_glob_node(char *value, int pos);
+void freeglobing(t_globing **head);
+void print_dir_lst(t_dir_cont *head);
+char  *in_which_dir(char *s);
+int lenofminiwild(char *arg);
+void treat_wild(char **ret, char *old_arg, int *j);
+int get_retlen(char **old_arg);
+char **new_args(char **old_arg);
+int valid_dir(char *dir_nmae);
+int is_it_wild_args(char **av);
+int is_it_wild(char *av);
+
+
+# endif
+
