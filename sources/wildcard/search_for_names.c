@@ -180,45 +180,26 @@ void check_validation(char *needle, t_dir_cont *head, int type)
 // }
 
 
-
-// int main(int ac , char **av)
+// int main(int ac, char **av)
 // {
-//     int i;
-//     t_globing *head;
-//     if (ac != 3)
-//         return 1;
-    
-//     i = 0;
-//     head = wilding(av[1]);
-//     print_glob(head);
-//     printf("is it there ? : %d\n", check_midd( head->value, av[2], &i));
-//     printf("MIGHTY I : %d\n", i);
-//     freeglobing(&head);
+//     t_dir_cont *head;
+//     char **whatsin;
+//     if (ac == 1)
+//         return(printf("enter more args \n"), 1);
+//     whatsin = all_dir_sorted("/home/ilaasri/Desktop/C_cursus/minishell_v2/");
+//     head = array_to_lst_dir(whatsin, "/home/ilaasri/Desktop/C_cursus/minishell_v2/");
+//     print_dir_lst(head);
+//     printf("Needle : %s\n", av[1]);
+//     check_validation(av[1], head, ALL_KINDS);
+//     printf("#######################################\n");
+//     printf("NUMBER OF MATCHES>>%d\n", is_there_a_match(head));
+//     print_dir_lst(head);
+//     free_mynigga(whatsin);
+//     free_dir_lst(&head);
+
+//     // (void)av;
+//     // (void)head;
+//     return 0;
 // }
-
-
-
-
-int main(int ac, char **av)
-{
-    t_dir_cont *head;
-    char **whatsin;
-    if (ac == 1)
-        return(printf("enter more args \n"), 1);
-    whatsin = all_dir_sorted("/home/ilaasri/Desktop/C_cursus/minishell_v2/");
-    head = array_to_lst_dir(whatsin, "/home/ilaasri/Desktop/C_cursus/minishell_v2/");
-    print_dir_lst(head);
-    printf("Needle : %s\n", av[1]);
-    check_validation(av[1], head, ALL_KINDS);
-    printf("#######################################\n");
-    printf("NUMBER OF MATCHES>>%d\n", is_there_a_match(head));
-    print_dir_lst(head);
-    free_mynigga(whatsin);
-    free_dir_lst(&head);
-
-    // (void)av;
-    // (void)head;
-    return 0;
-}
 
 

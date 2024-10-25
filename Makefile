@@ -1,8 +1,9 @@
 GNL = lib/gnl/get_next_line.c lib/gnl/get_next_line_utils.c
 
-WILDCARD_FILES = sources/wildcard/globing.c \
-				sources/wildcard/tools.c  sources/wildcard/wildcard.c  sources/wildcard/sorted_res.c \
-				sources/wildcard/array_to_lst.c   sources/wildcard/search_for_names.c
+WILDCARD_FILES = sources/wildcard/globing.c sources/wildcard/wildcard.c \
+				sources/wildcard/tools.c    sources/wildcard/sorted_res.c \
+				sources/wildcard/array_to_lst.c   sources/wildcard/search_for_names.c\
+				 sources/wildcard/simple_expand.c
 
 CFILES = sources/one.c sources/two.c sources/constractors.c sources/parse.c \
             sources/print.c sources/tree.c sources/exec.c sources/exec_pipe.c\

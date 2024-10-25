@@ -44,4 +44,9 @@ int file_or_dir(char *s);
 int valid_dir(char *dir_nmae);
 
 
+/************************************************/
+// LLOKING FOR MATCHES 
+/************************************************/
+int is_there_a_match(t_dir_cont *head);
+
 #endif

@@ -75,7 +75,6 @@ void free_dir_lst(t_dir_cont **head)
 {
     t_dir_cont *tmp;
 
-    tmp = (*head)->next;
     while (*head)
     {
         tmp = (*head)->next;
