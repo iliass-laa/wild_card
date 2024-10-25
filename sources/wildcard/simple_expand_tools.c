@@ -45,7 +45,6 @@ void print_valid_ones(t_dir_cont *head)
     }
 }
 
-
 char *get_next_valid(t_dir_cont * dir_cont, int index)
 {
     int i;
@@ -73,11 +72,14 @@ char *get_next_valid(t_dir_cont * dir_cont, int index)
 char *get_work_direc()
 {
     char *work_dir;
+    char *last;
 
     work_dir = NULL;
     work_dir = getcwd(work_dir, 256);
+    last = ft_strjoin(work_dir, "/");
+    free(work_dir);
     // printf(">>Working directory :>>%s\n", work_dir);
-    return(work_dir);
+    return(last);
 }
 
 

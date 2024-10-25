@@ -5,6 +5,7 @@ int count_matches(char *old, t_dir_cont *dir_cont)
     int ret;
     int type;
 
+    // print_dir_lst(dir_cont);
     type = file_or_dir(old);
     if (type == DIREC)
     {    
@@ -13,13 +14,11 @@ int count_matches(char *old, t_dir_cont *dir_cont)
     }
     else
         printf("I AM LOOOKING FOR ALL\n");
-    print_dir_lst(dir_cont);
-
     check_validation(old, dir_cont, type);
-    printf("#################################\n");
-    printf("AFTER VALIDATION\n");
-    printf("#################################\n");
-    print_dir_lst(dir_cont);
+    // printf("#################################\n");
+    // printf("AFTER VALIDATION\n");
+    // printf("#################################\n");
+    // print_dir_lst(dir_cont);
 
     ret = is_there_a_match(dir_cont);
     printf("NbR of matches : %d\n", ret);
@@ -138,6 +137,7 @@ char **new_ones(char **old)
         return (printf("nothing is wild enough !\n"), unquote_old(old));
         // return (old);
     work_dir = get_work_direc();
+    //  work_dir = ft_strdup("/Users/ilaasri/Desktop/C_cursus/wilding/test_wild");
     dir_cont_array = all_dir_sorted(work_dir);
     // printd(dir_cont_array);
     dir_cont = array_to_lst_dir(dir_cont_array, work_dir);

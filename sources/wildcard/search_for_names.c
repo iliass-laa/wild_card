@@ -143,6 +143,7 @@ void check_validation(char *needle, t_dir_cont *head, int type)
     t_dir_cont *tmp;
     t_globing *glob;
 
+    // print_dir_lst(head);
     tmp = head;
     if (type == DIREC)
     {
@@ -166,18 +167,27 @@ void check_validation(char *needle, t_dir_cont *head, int type)
     }
     if (type == DIREC)
         free(needle);
+    // printf("#################################\n");
+    // printf("AFTER VALIDATION\n");
+    // printf("#################################\n");
+    // print_dir_lst(head);
+
     freeglobing(&glob);
 }
 
+
+// the full path of a wrong dir  /Users/ilaasri/Desktop/C_cursus/wilding/test_wild
 
 // int main(int ac, char **av)
 // {
 //     t_dir_cont *head;
 //     char **whatsin;
+//     char *work_dir;
 //     if (ac == 1)
 //         return(printf("enter more args \n"), 1);
-//     whatsin = all_dir_sorted("/home/ilaasri/Desktop/C_cursus/wilding/");
-//     head = array_to_lst_dir(whatsin, "/home/ilaasri/Desktop/C_cursus/wilding/");
+//     work_dir = get_work_direc();
+//     whatsin = all_dir_sorted(work_dir);
+//     head = array_to_lst_dir(whatsin, work_dir);
 //     print_dir_lst(head);
 //     printf("Needle : %s\n", av[1]);
 //     check_validation(av[1], head, DIREC);
@@ -186,6 +196,7 @@ void check_validation(char *needle, t_dir_cont *head, int type)
 //     print_dir_lst(head);
 //     free_mynigga(whatsin);
 //     free_dir_lst(&head);
+//     free(work_dir);
 //     // (void)av;
 //     // (void)head;
 //     return 0;
