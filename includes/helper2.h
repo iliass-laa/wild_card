@@ -48,5 +48,20 @@ int valid_dir(char *dir_nmae);
 // LLOKING FOR MATCHES 
 /************************************************/
 int is_there_a_match(t_dir_cont *head);
+void reset_validation(t_dir_cont *head);
+
+
+
+/**************************************************** */
+// TOOLS OF SIMPLE EXPAND :
+/**************************************************** */
+char **clone(char **av, int len);
+void freedom(char ***dir_cont_array, t_dir_cont **dir_cont,char **working);
+void printd(char **av);
+void print_valid_ones(t_dir_cont *head);
+char *get_next_valid(t_dir_cont * dir_cont, int index);
+char *get_work_direc();
+char **unquote_old(char **old);
+char *take_slash_of(char *arg);
 
 #endif

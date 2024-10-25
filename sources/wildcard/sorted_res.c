@@ -20,7 +20,7 @@ char **all_dir_sorted(char *dir_name)
 
     i = 0;
     retlen = get_len_of_dir(dir_name);
-    printf("retlen : %d\n", retlen);
+    // printf("retlen : %d\n", retlen);
     if (retlen <= 0)
         return NULL;
     ret = (char **)malloc(sizeof(char *) *(retlen + 1));
@@ -43,7 +43,7 @@ char **all_dir_sorted(char *dir_name)
 
 int skip_dot(char *s, int i)
 {
-    while (s[i] && s[i] == '.')
+    while (s[i] && ft_isalpha(s[i]) == 0)
         i++;    
     return (i);
 }
@@ -57,9 +57,9 @@ int need_a_sort(char *a, char *b)
     j = skip_dot(b, 0);
     while (a[i])
     {
-        if (a[i] > b[j])
+        if (ft_tolower(a[i]) > ft_tolower(b[j]))
             return -1;
-        if (a[i] < b[j])
+        if (ft_tolower(a[i]) < ft_tolower(b[j]))
             return 0;
         i++;
     }

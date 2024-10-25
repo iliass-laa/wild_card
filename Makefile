@@ -3,7 +3,7 @@ GNL = lib/gnl/get_next_line.c lib/gnl/get_next_line_utils.c
 WILDCARD_FILES = sources/wildcard/globing.c sources/wildcard/wildcard.c \
 				sources/wildcard/tools.c    sources/wildcard/sorted_res.c \
 				sources/wildcard/array_to_lst.c   sources/wildcard/search_for_names.c\
-				 sources/wildcard/simple_expand.c
+				sources/wildcard/simple_expand.c sources/wildcard/simple_expand_tools.c
 
 CFILES = sources/one.c sources/two.c sources/constractors.c sources/parse.c \
             sources/print.c sources/tree.c sources/exec.c sources/exec_pipe.c\
@@ -34,7 +34,7 @@ RLFLAGS =	-L/Users/ilaasri/.brew/opt/readline/lib -lreadline # tell linker where
 RLINCLUDE	=	-I/Users/ilaasri/.brew/opt/readline/include  #
 
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 # FFLAG = -fsanitize=address -g
 
 FSAN = 

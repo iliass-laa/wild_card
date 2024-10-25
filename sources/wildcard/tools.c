@@ -25,7 +25,7 @@ int file_or_dir(char *s)
 {
     if (s[ft_strlen(s) - 1] == '/')
         return(DIREC);
-    return RFILE;
+    return ALL_KINDS;
 }
 
 int valid_interval(char* val)

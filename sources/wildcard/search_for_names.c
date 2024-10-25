@@ -94,9 +94,6 @@ int check_glob(char *val, t_globing *node)
             ret = check_last(tmp->value, val ,i);
         tmp = tmp->next;
     }
-    if (ret == 0)
-        printf("THE MIGHTY I>>>>%d\n", i);
-    (void)j;
     return (ret);
 }
 
@@ -147,9 +144,13 @@ void check_validation(char *needle, t_dir_cont *head, int type)
     t_globing *glob;
 
     tmp = head;
+    if (type == DIREC)
+    {
+        printf("Needle i am looking for :%s\n", needle);
+        needle = take_slash_of(needle);
+        printf("AFTER Needle i am looking for :%s\n", needle);
+    }
     glob = wilding(needle);
-    // printf("############\n");
-    // print_glob(glob);
     while (tmp)
     {
         if (0 == check_node_for_valid(glob, tmp,type))
@@ -163,21 +164,10 @@ void check_validation(char *needle, t_dir_cont *head, int type)
             tmp->valid = 0;
         tmp = tmp->next;
     }
+    if (type == DIREC)
+        free(needle);
     freeglobing(&glob);
 }
-
-
-// char **names_u_need(char *s , t_dir_cont *head)
-// {
-//     char **names;
-//     int fil_or_dir;
-//     int i = 0;
-
-//     fil_or_dir = ALL_KINDS;
-//     if (s[ft_strlen(s) - 1] == '/')
-//         fil_or_dir = DIREC;
-//     return(names);
-// }
 
 
 // int main(int ac, char **av)
@@ -186,17 +176,16 @@ void check_validation(char *needle, t_dir_cont *head, int type)
 //     char **whatsin;
 //     if (ac == 1)
 //         return(printf("enter more args \n"), 1);
-//     whatsin = all_dir_sorted("/home/ilaasri/Desktop/C_cursus/minishell_v2/");
-//     head = array_to_lst_dir(whatsin, "/home/ilaasri/Desktop/C_cursus/minishell_v2/");
+//     whatsin = all_dir_sorted("/home/ilaasri/Desktop/C_cursus/wilding/");
+//     head = array_to_lst_dir(whatsin, "/home/ilaasri/Desktop/C_cursus/wilding/");
 //     print_dir_lst(head);
 //     printf("Needle : %s\n", av[1]);
-//     check_validation(av[1], head, ALL_KINDS);
+//     check_validation(av[1], head, DIREC);
 //     printf("#######################################\n");
 //     printf("NUMBER OF MATCHES>>%d\n", is_there_a_match(head));
 //     print_dir_lst(head);
 //     free_mynigga(whatsin);
 //     free_dir_lst(&head);
-
 //     // (void)av;
 //     // (void)head;
 //     return 0;
