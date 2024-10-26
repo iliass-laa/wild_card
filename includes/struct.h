@@ -209,6 +209,35 @@ typedef struct s_exec_pipe
 /********************************* */
 // WILDCARD THINGS
 /********************************* */
+
+typedef struct s_wild
+{
+    int			i;
+	int			j;
+	int			pos;
+	int			slen;
+	t_globing	*ret;
+	char		*val;
+}t_wild;
+
+typedef struct s_wild_expand
+{
+    char		**new;
+	int			new_len;
+	char		*work_dir;
+	char		**dir_cont_array;
+	t_dir_cont	*dir_cont;
+	int			i;
+}t_wild_expand;
+
+typedef struct s_new_args
+{
+    int		i;
+	int		j;
+	int		tmp;
+	char	**new;
+}t_new_args;
+
 struct s_dir_cont
 {
     char *value;

@@ -1,107 +1,121 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   globing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilaasri <ilaasri@student.1337.ma>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/26 19:53:13 by ilaasri           #+#    #+#             */
+/*   Updated: 2024/10/26 19:53:15 by ilaasri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void freeglobing(t_globing **head)
+void	freeglobing(t_globing **head)
 {
-    t_globing *tmp;
+	t_globing	*tmp;
 
-    while (*head)
-    {
-        tmp = (*head)->next;
-        free((*head)->value);
-        free(*head);
-        *head = tmp;
-    }   
+	while (*head)
+	{
+		tmp = (*head)->next;
+		free((*head)->value);
+		free(*head);
+		*head = tmp;
+	}
 }
 
-void print_glob(t_globing *head)
+t_globing	*create_glob_node(char *value, int pos)
 {
-    t_globing *tmp;
+	t_globing	*node;
 
-    tmp = head;
-    while (tmp)
-    {
-        printf("val : %s, Pose: %d\n", tmp->value, tmp->pos);
-        tmp = tmp->next;
-    }
+	node = (t_globing *)malloc(sizeof(t_globing));
+	if (!node)
+		panic("malloc failed !");
+	if (is_quoted(value))
+		value = whithout_quotes(value);
+	node->value = value;
+	node->pos = pos;
+	node->found_it = 0;
+	node->next = NULL;
+	return (node);
 }
 
-int get_next_wild(char *av, int i)
+t_globing	*add_glob_node(t_globing *head, t_globing *new)
 {
-    while (av[i] && av[i] != '*')
-    {
-        if (av[i] == '\'' || av[i] == '"')
-            i = get_next_quote(av, i);
-        if (av[i])
-            i++;
-    }
-    return i;
+	t_globing	*tmp;
+
+	if (!head)
+		return (new);
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	return (head);
 }
 
-t_globing *create_glob_node(char *value, int pos)
+void	wilding_ww(t_wild *var, char *s)
 {
-    t_globing *node;
-
-    node = (t_globing *)malloc(sizeof(t_globing));
-    if (!node)
-        panic("malloc failed !");
-    if (is_quoted(value))
-        value = whithout_quotes(value);
-    node->value = value;
-    node->pos = pos;
-    node->found_it = 0;
-    node->next = NULL;
-    return (node);
+	var->j = get_next_wild(s, var->i);
+	var->val = ft_substr(s, var->i, var->j - var->i);
+	if (var->i == 0)
+	{
+		var->pos = FIRST;
+		if (var->j == var->slen)
+			var->pos = ALL;
+	}
+	else if (var->j == var->slen)
+		var->pos = LAST;
+	else
+		var->pos = MIDLLE;
+	var->ret = add_glob_node(var->ret, create_glob_node(var->val, var->pos));
+	var->i = var->j;
 }
 
-t_globing *add_glob_node(t_globing *head, t_globing *new)
+t_globing	*wilding(char *s)
 {
-    t_globing *tmp;
+	t_wild	var;
 
-    if (!head)
-        return (new);
-    tmp = head;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new; 
-    return (head);
+	var.i = 0;
+	var.j = 0;
+	var.ret = NULL;
+	var.slen = (int)ft_strlen(s);
+	while (s[var.i])
+	{
+		if (s[var.i] != '*')
+			wilding_ww(&var, s);
+		if (s[var.i])
+			var.i++;
+	}
+	if (!var.ret)
+		var.ret = create_glob_node(NULL, ALL);
+	return (var.ret);
 }
 
-t_globing *wilding(char *s)
-{
-    int i;
-    int j;
-    int pos;
-    int slen;
-    t_globing *ret;
-    char *val;
-
-    i = 0;
-    j = 0;
-    ret = NULL;
-    slen = (int)ft_strlen(s);
-    while (s[i])
-    {
-        if (s[i] != '*')
-        {
-            j = get_next_wild(s, i);
-            val = ft_substr(s, i, j - i);
-            if (i == 0)
-            {
-                pos = FIRST;
-                if (j == slen)
-                    pos = ALL;
-            }
-            else if (j == slen)
-                pos = LAST;
-            else
-                pos = MIDLLE;
-            ret = add_glob_node(ret, create_glob_node(val, pos));
-            i = j;
-        }
-        if (s[i])
-            i++;
-    }
-    if (!ret)
-        ret = create_glob_node(NULL, ALL);
-    return ret;
-}
+// var.j = get_next_wild(s, var.i);
+// var.val = ft_substr(s, var.i, var.j - var.i);
+// if (var.i == 0)
+// {
+// 	var.pos = FIRST;
+// 	if (var.j == var.slen)
+// 		var.pos = ALL;
+// }
+// else if (var.j == var.slen)
+// 	var.pos = LAST;
+// else
+// 	var.pos = MIDLLE;
+// var.ret = add_glob_node(var.ret, create_glob_node(var.val,
+// 			var.pos));
+// var.i = var.j;
+// 
+// void	print_glob(t_globing *head)
+// {
+// 	t_globing	*tmp;
+// 
+// 	tmp = head;
+// 	while (tmp)
+// 	{
+// 		printf("val : %s, Pose: %d\n", tmp->value, tmp->pos);
+// 		tmp = tmp->next;
+// 	}
+// }

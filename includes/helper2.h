@@ -71,4 +71,14 @@ char *take_slash_of(char *arg);
 
 char **wild_expand(char **old);
 
+/**************************************************************/
+// SEARCHING TOOLS :
+/**************************************************************/
+int	check_last(char *needl, char *haystak, int i);
+int	check_midd(char *needle, char *haystack, int *start);
+int	check_first(char *needle, char *haystak, int *start);
+int	check_glob(char *val, t_globing *node);
+int	check_node_for_valid(t_globing *wild, t_dir_cont *head, int fil_or_dir);
+
+
 #endif
