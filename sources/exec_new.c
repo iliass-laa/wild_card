@@ -184,6 +184,7 @@ int exec_new_cmd(t_cmd *cmd , int *last_status)
 
     p = (struct new_cmd *)cmd;
     p->argv = expander( p->argv, *(p->myenv));
+    p->argv = wild_expand(p->argv);
     /********************************************** */
     // THIS ONE JUST TO KNOW IF THE STATUS IS WORKING PROPERLY
     /********************************************** */
@@ -231,7 +232,7 @@ int exec_new_cmd(t_cmd *cmd , int *last_status)
         }
     }
     // free_mynigga(p->argv);
-    p->argv = NULL;
+    // p->argv = NULL;
     free(abs_path);
     abs_path = NULL;
     exit(0);
@@ -309,12 +310,12 @@ int new_exec(t_cmd *cmd, int ref, int *last_status)
                 pid = fork();
                 if (pid == 0)
                 {
-                    signal(SIGINT, NULL);
+                    // signal(SIGINT, NULL);
                     exec_new_cmd(cmd, last_status);
                 }
                 else
                 {
-                    signal(SIGINT, do_nothing);
+                    // signal(SIGINT, do_nothing);
                     waitpid(pid, &status, 0);
                     status = WEXITSTATUS(status);
                     if (status == SIGINT)

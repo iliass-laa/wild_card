@@ -107,6 +107,7 @@ void free_or(t_cmd *cmd)
     free(p);
     p = NULL;
 }
+
 void free_and(t_cmd *cmd)
 {
     struct and *p;

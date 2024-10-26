@@ -37,3 +37,10 @@ what TILLAS did lately
     the pipe also works ;
     (btw leaks in the expand folder and builtins are serious shit hh)
 }
+
+
+//TILLAS NOTES :
+
+>> EXPAND ENV VARS  NEED TO NOT AFFECT THE QUOTES
+
+>> I COULDN'T EXEC MINISHELL INSIDE MINI SHELL

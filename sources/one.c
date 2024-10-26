@@ -62,9 +62,10 @@ int check_qoutes(char *s)
 
 void panic(char *str)
 {
-    (void)str;
-    // if (str)
-        // dprintf(2, "%s", str);
+    if (str)
+        ft_putstr_fd(str, 2);
+    if (ft_strcmp("exit\n", str))
+        exit(0);
     exit(1);
 }
 
@@ -128,54 +129,54 @@ void parse_nd_exec(char **my_tokens,t_env **dup_env, int *status)
 void history(char *str)
 {
     if (!str)
-        panic("BY\n");
+        panic("exit\n");
     if (!str || 0 == ft_strlen(str))
         return ;
     if (is_white_str(str))
         return;
     add_history(str);
-
 }
 
-void ff(){
+void ff()
+{
     system("leaks minishell");
 }
 
-// int main(  int ac, char **av, char **env)
-// {
-//     char *str;
-//     int status;
-//     char **my_tokens;
-//     t_env *dup_env;
-//     int checker ;   
-//     // atexit(ff);
-//     (void)av;
-//     (void)ac;
-//     status = 0;
-//     dup_env = init_env(env);
-// 	signal(SIGINT, signal_handler);
-// 	signal(SIGQUIT, SIG_IGN);
-//     while(1)
-//     {
-//         sig = -1;
-//         str = readline(GRN"depechez-vous!> "CRESET);
-//             history(str);
-//         if (str && ft_strlen(str) && _check_str(str) == 0)
-//         {
-//             signal(SIGQUIT, SIG_DFL);
-//             my_tokens = fr9_trb7(str);
-//             checker = _check_tokens(my_tokens);
-//             if (checker != EXEC && checker != SUB_SH)
-//             {
-//                 free_mynigga(my_tokens);
-//                 error(NULL,checker);
-//                 status = 258;
-//             }
-//             else if (my_tokens)
-//                 parse_nd_exec(my_tokens, &dup_env, &status);
-//             // printf("SIG :%d\n", sig);
-//             // printf("status AT the very end :%d\n", status);
-//         }
-//         free(str);
-//     }
-// }
+int main(  int ac, char **av, char **env)
+{
+    char *str;
+    int status;
+    char **my_tokens;
+    t_env *dup_env;
+    int checker ;   
+    // atexit(ff);
+    (void)av;
+    (void)ac;
+    status = 0;
+    dup_env = init_env(env);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+    while(1)
+    {
+        sig = -1;
+        str = readline(GRN"depechez-vous!> "CRESET);
+            history(str);
+        if (str && ft_strlen(str) && _check_str(str) == 0)
+        {
+            // signal(SIGQUIT, SIG_DFL);
+            my_tokens = fr9_trb7(str);
+            checker = _check_tokens(my_tokens);
+            if (checker != EXEC && checker != SUB_SH)
+            {
+                free_mynigga(my_tokens);
+                error(NULL,checker);
+                status = 258;
+            }
+            else if (my_tokens)
+                parse_nd_exec(my_tokens, &dup_env, &status);
+            // printf ("SIG :%d\n", sig);
+            // printf ("status AT the very end :%d\n", status);
+        }
+        free(str);
+    }
+}

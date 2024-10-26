@@ -64,80 +64,80 @@ char  *in_which_dir(char *s)
 }
 
 
-void treat_wild(char **ret, char *old_arg, int *j)
-{
-    char *dir_name;
+// void treat_wild(char **ret, char *old_arg, int *j)
+// {
+//     char *dir_name;
 
-    dir_name = in_which_dir(old_arg);
-    if (valid_dir(dir_name))
-        return;
-    (void)ret;
-    (void)old_arg;
-    (void)j;
-    (void)dir_name;
-}
+//     dir_name = in_which_dir(old_arg);
+//     if (valid_dir(dir_name))
+//         return;
+//     (void)ret;
+//     (void)old_arg;
+//     (void)j;
+//     (void)dir_name;
+// }
 
-int lenofminiwild(char *arg)
-{
-    int i;
-    int ret;
+// int lenofminiwild(char *arg)
+// {
+//     int i;
+//     int ret;
 
-    ret = 0;
-    i = 0;
-    while (arg[i])
-    {
-        if (arg[i] == '/')
-            ret++;
-        i++;
-    }
-    return (ret);
-}
+//     ret = 0;
+//     i = 0;
+//     while (arg[i])
+//     {
+//         if (arg[i] == '/')
+//             ret++;
+//         i++;
+//     }
+//     return (ret);
+// }
 
-int get_retlen(char **old_arg)
-{
-    int i;
-    int ret;
+// int get_retlen(char **old_arg)
+// {
+//     int i;
+//     int ret;
 
-    ret = 0;
-    i = 0;
-    while (old_arg[i])
-    {
-        if (is_it_wild(old_arg[i]))
-            ret = lenofminiwild(old_arg[i]);
-        else 
-            ret ++;
-        if (ret < 0)
-            return (ret);
-        i++;
-    }
-    return (ret);
-}
+//     ret = 0;
+//     i = 0;
+//     while (old_arg[i])
+//     {
+//         if (is_it_wild(old_arg[i]))
+//             ret = lenofminiwild(old_arg[i]);
+//         else 
+//             ret ++;
+//         if (ret < 0)
+//             return (ret);
+//         i++;
+//     }
+//     return (ret);
+// }
 
-char **new_args(char **old_arg)
-{
-    int i, j;
-    char **ret;
-    int retlen;
+// char **new_args(char **old_arg)
+// {
+//     int i, j;
+//     char **ret;
+//     int retlen;
 
-    i = 0;
-    j =0;
-    retlen = get_retlen(old_arg);
-    if (retlen <= 0)
-        return (old_arg);
-    ret = (char **)malloc(sizeof(char *) * (retlen + 1));
-    if (!ret)
-        return (NULL);
-    while(old_arg[i])
-    {
-        ret[j] = ft_strdup(old_arg[i]);
-        if(is_it_wild(old_arg[i]))
-            treat_wild(ret, old_arg[i], &j);
-        i++;
-        j++;
-    }
-    free_mynigga(old_arg);
-    return (ret);
-}
+//     i = 0;
+//     j =0;
+//     retlen = get_retlen(old_arg);
+//     if (retlen <= 0)
+//         return (old_arg);
+//     ret = (char **)malloc(sizeof(char *) * (retlen + 1));
+//     if (!ret)
+//         return (NULL);
+//     while(old_arg[i])
+//     {
+//         ret[j] = ft_strdup(old_arg[i]);
+//         if(is_it_wild(old_arg[i]))
+//             treat_wild(ret, old_arg[i], &j);
+//         i++;
+//         j++;
+//     }
+//     free_mynigga(old_arg);
+//     return (ret);
+// }
 
 void print_to_expand(char **av)
 {

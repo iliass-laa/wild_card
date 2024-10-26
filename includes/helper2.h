@@ -64,4 +64,11 @@ char *get_work_direc();
 char **unquote_old(char **old);
 char *take_slash_of(char *arg);
 
+
+/*************************************************************** */
+//SIMPLE WILD EXPAND :
+/*************************************************************** */
+
+char **wild_expand(char **old);
+
 #endif

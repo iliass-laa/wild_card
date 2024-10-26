@@ -143,14 +143,9 @@ void check_validation(char *needle, t_dir_cont *head, int type)
     t_dir_cont *tmp;
     t_globing *glob;
 
-    // print_dir_lst(head);
     tmp = head;
     if (type == DIREC)
-    {
-        printf("Needle i am looking for :%s\n", needle);
         needle = take_slash_of(needle);
-        printf("AFTER Needle i am looking for :%s\n", needle);
-    }
     glob = wilding(needle);
     while (tmp)
     {
@@ -167,11 +162,6 @@ void check_validation(char *needle, t_dir_cont *head, int type)
     }
     if (type == DIREC)
         free(needle);
-    // printf("#################################\n");
-    // printf("AFTER VALIDATION\n");
-    // printf("#################################\n");
-    // print_dir_lst(head);
-
     freeglobing(&glob);
 }
 
