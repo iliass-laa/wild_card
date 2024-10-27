@@ -14,32 +14,28 @@
 
 char	**all_dir_sorted(char *dir_name)
 {
-	DIR				*dir;
-	char			**ret;
-	int				retlen;
-	struct dirent	*po;
-	int				i;
+	t_dir_cont_array	var;
 
-	i = 0;
-	retlen = get_len_of_dir(dir_name);
-	if (retlen <= 0)
+	var.i = 0;
+	var.retlen = get_len_of_dir(dir_name);
+	if (var.retlen <= 0)
 		return (NULL);
-	ret = (char **)malloc(sizeof(char *) * (retlen + 1));
-	if (!ret)
+	var.ret = (char **)malloc(sizeof(char *) * (var.retlen + 1));
+	if (!var.ret)
 		panic("malloc failed!\n");
-	dir = opendir(dir_name);
-	while (i < retlen)
+	var.dir = opendir(dir_name);
+	while (var.i < var.retlen)
 	{
-		po = readdir(dir);
-		ret[i] = ft_strdup(po->d_name);
-		if (!ret[i])
+		var.po = readdir(var.dir);
+		var.ret[var.i] = ft_strdup(var.po->d_name);
+		if (!var.ret[var.i])
 			panic("malloc failed!\n");
-		i++;
+		var.i++;
 	}
-	ret[i] = NULL;
-	closedir(dir);
-	just_sort(ret);
-	return (ret);
+	var.ret[var.i] = NULL;
+	closedir(var.dir);
+	just_sort(var.ret);
+	return (var.ret);
 }
 
 int	skip_dot(char *s, int i)
@@ -54,15 +50,16 @@ int	need_a_sort(char *a, char *b)
 	int	i;
 	int	j;
 
-	i = skip_dot(a, 0);
-	j = skip_dot(b, 0);
+	i = 0;
+	j = 0;
 	while (a[i])
 	{
-		if (ft_tolower(a[i]) > ft_tolower(b[j]))
+		if ((a[i]) > (b[j]))
 			return (-1);
-		if (ft_tolower(a[i]) < ft_tolower(b[j]))
+		if ((a[i]) < (b[j]))
 			return (0);
 		i++;
+		j++;
 	}
 	return (0);
 }

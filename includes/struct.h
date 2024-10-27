@@ -256,4 +256,13 @@ struct s_globing
     t_globing *next;
 };
 
+typedef struct s_dir_cont_array
+{
+	DIR				*dir;
+	char			**ret;
+	int				retlen;
+	struct dirent	*po;
+	int				i;
+}t_dir_cont_array;
+
 #endif

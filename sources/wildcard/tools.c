@@ -79,11 +79,3 @@ int	how_many_wild(char *av)
 	}
 	return (ret);
 }
-
-// int main(int ac , char **av)
-// {
-//     if (ac == 1)
-//         return (1);
-//     printf(">>>%d\n", how_many_wild(av[1]));
-//     return (0);
-// }

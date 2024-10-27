@@ -310,12 +310,12 @@ int new_exec(t_cmd *cmd, int ref, int *last_status)
                 pid = fork();
                 if (pid == 0)
                 {
-                    // signal(SIGINT, NULL);
+                    signal(SIGINT, NULL);
                     exec_new_cmd(cmd, last_status);
                 }
                 else
                 {
-                    // signal(SIGINT, do_nothing);
+                    signal(SIGINT, do_nothing);
                     waitpid(pid, &status, 0);
                     status = WEXITSTATUS(status);
                     if (status == SIGINT)

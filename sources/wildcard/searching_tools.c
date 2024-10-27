@@ -35,7 +35,7 @@ int	check_last(char *needl, char *haystak, int i)
 	return (1);
 }
 
-int	check_midd(char *needle, char *haystack, int *start)
+int	check_midd(char *needle, char *haystack, int *start, int *index)
 {
 	int	i;
 	int	j;
@@ -55,10 +55,11 @@ int	check_midd(char *needle, char *haystack, int *start)
 			j = 0;
 		i++;
 	}
+	*index = 1;
 	return (-1);
 }
 
-int	check_first(char *needle, char *haystak, int *start)
+int	check_first(char *needle, char *haystak, int *start, int *index)
 {
 	int	i;
 
@@ -70,6 +71,7 @@ int	check_first(char *needle, char *haystak, int *start)
 		*start = i;
 		return (0);
 	}
+	*index = 1;
 	return (1);
 }
 
@@ -91,17 +93,9 @@ int	check_glob(char *val, t_globing *node)
 	while (tmp)
 	{
 		if (tmp->pos == FIRST)
-		{
-			ret = check_first(tmp->value, val, &i);
-			if (ret != 0)
-				j = 1;
-		}
+			ret = check_first(tmp->value, val, &i, &j);
 		if (tmp->pos == MIDLLE && j == 0)
-		{
-			ret = check_midd(tmp->value, val, &i);
-			if (ret)
-				j = 1;
-		}
+			ret = check_midd(tmp->value, val, &i, &j);
 		if (tmp->pos == LAST && j == 0)
 			ret = check_last(tmp->value, val, i);
 		tmp = tmp->next;

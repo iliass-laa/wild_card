@@ -12,49 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-char	**clone(char **av, int len)
-{
-	int		i;
-	char	**res;
-
-	i = 0;
-	res = (char **)malloc(sizeof(char *) * (len + 1));
-	while (i < len)
-	{
-		res[i] = ft_strdup(av[i]);
-		i++;
-	}
-	res[i] = NULL;
-	return (res);
-}
-
 void	freedom(char ***dir_cont_array, t_dir_cont **dir_cont, char **working)
 {
 	free_mynigga(*dir_cont_array);
 	free_dir_lst(dir_cont);
 	free(*working);
-}
-
-void	printd(char **av)
-{
-	int	i;
-
-	i = 0;
-	while (av[i])
-		printf("AV :: %s\n", av[i++]);
-}
-
-void	print_valid_ones(t_dir_cont *head)
-{
-	t_dir_cont	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if (tmp->valid == 1)
-			printf("VALID ONE :%s\n", tmp->value);
-		tmp = tmp->next;
-	}
 }
 
 char	*get_next_valid(t_dir_cont *dir_cont, int index)
@@ -134,3 +96,25 @@ char	*take_slash_of(char *arg)
 	new[i] = 0;
 	return (new);
 }
+
+// void	printd(char **av)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (av[i])
+// 		printf("AV :: %s\n", av[i++]);
+// }
+
+// void	print_valid_ones(t_dir_cont *head)
+// {
+// 	t_dir_cont	*tmp;
+
+// 	tmp = head;
+// 	while (tmp)
+// 	{
+// 		if (tmp->valid == 1)
+// 			printf("VALID ONE :%s\n", tmp->value);
+// 		tmp = tmp->next;
+// 	}
+// }

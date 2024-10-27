@@ -32,3 +32,19 @@ int	get_next_wild(char *av, int i)
 	}
 	return (i);
 }
+
+char	**clone(char **av, int len)
+{
+	int		i;
+	char	**res;
+
+	i = 0;
+	res = (char **)malloc(sizeof(char *) * (len + 1));
+	while (i < len)
+	{
+		res[i] = ft_strdup(av[i]);
+		i++;
+	}
+	res[i] = NULL;
+	return (res);
+}

@@ -149,15 +149,15 @@ int main(  int ac, char **av, char **env)
     char **my_tokens;
     t_env *dup_env;
     int checker ;   
-    // atexit(ff);
+
     (void)av;
     (void)ac;
     status = 0;
     dup_env = init_env(env);
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
     while(1)
     {
+        signal(SIGINT, signal_handler);
+        signal(SIGQUIT, SIG_IGN);
         sig = -1;
         str = readline(GRN"depechez-vous!> "CRESET);
             history(str);
