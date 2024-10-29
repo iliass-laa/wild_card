@@ -8,28 +8,32 @@ DONE
     [*] expand herdoc
     [*] fix ft_atoi_exit
     [*] exit
+    [*] update pwd in env at cd command exec 
+        {   
+            when i open bash there is no OLDPWD
+                check if there is 
+
+        }
+    [*] fix leaks in expander
 
 NOL_YEl TASKS {
     IN PROCCESS
 
-    [] split args with spasecs inside expander // asc ur peer
-
+    [] split args with spasecs inside expander //keep space in double split in Word
+    
     [] fix leaks in builts ins
 
-    [] fix leaks in expander
-
-    [] access $? // asc ur peer hoe he passes
+    [] access $? // asc ur peer hoe he passes last modified where
 
     [] expand redirection filename //
 
     [] print error to fd 1
 
-    [] update pwd in env at cd command exec
 
 }
 
 
-what TILLAS did lately
+what TILLAS did in lately
 {
     the Exit status works just fine !
     but check the exepend of it cause i just made i temporary 
@@ -37,10 +41,3 @@ what TILLAS did lately
     the pipe also works ;
     (btw leaks in the expand folder and builtins are serious shit hh)
 }
-
-
-//TILLAS NOTES :
-
->> EXPAND ENV VARS  NEED TO NOT AFFECT THE QUOTES
-
->> I COULDN'T EXEC MINISHELL INSIDE MINI SHELL

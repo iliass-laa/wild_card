@@ -55,16 +55,16 @@ int open_file(t_red *redirect,int *std[2], t_herdoc *herdoc, t_env *env)
         if (*std[0] != -1 && 4 == redirect->mode)
             close(*std[0]);
         if (77 == redirect->mode){
-            redirect->file = *expander(&(redirect->file), env);
+            redirect->file = *expander(&(redirect->file), env,0);
             *std[1] = open(redirect->file, O_RDWR | O_CREAT | O_APPEND, 0644);
         }
         else if (7== redirect->mode){
-            redirect->file = *expander(&(redirect->file), env);
+            redirect->file = *expander(&(redirect->file), env,0);
             *std[1] = open(redirect->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
         }
         else if (4== redirect->mode)
         {
-            redirect->file = *expander(&(redirect->file), env);
+            redirect->file = *expander(&(redirect->file), env, 0);
             *std[0] = open(redirect->file, O_RDONLY);
             if (*std[0] < 0)
             {
@@ -144,7 +144,7 @@ void pexit(char *s)
     exit(0);
 }
 
-int check_red(struct new_cmd *p)
+int check_red(t_cmd_exec  *p)
 {
     int status;
     int *std[2];
@@ -177,13 +177,14 @@ int check_red(struct new_cmd *p)
 int exec_new_cmd(t_cmd *cmd , int *last_status)
 {
     // (void)last_status;
-    struct new_cmd *p;
+    t_cmd_exec  *p;
     int status;
     char *abs_path;
     char **cur_env;
 
-    p = (struct new_cmd *)cmd;
-    p->argv = expander( p->argv, *(p->myenv));
+    signal (SIGINT, NULL);
+    p = (t_cmd_exec  *)cmd;
+    p->argv = expander( p->argv, *(p->myenv), last_status);
     p->argv = wild_expand(p->argv);
     /********************************************** */
     // THIS ONE JUST TO KNOW IF THE STATUS IS WORKING PROPERLY
@@ -232,7 +233,7 @@ int exec_new_cmd(t_cmd *cmd , int *last_status)
         }
     }
     // free_mynigga(p->argv);
-    // p->argv = NULL;
+    p->argv = NULL;
     free(abs_path);
     abs_path = NULL;
     exit(0);
@@ -242,12 +243,12 @@ int exec_new_cmd(t_cmd *cmd , int *last_status)
 
 int exec_sub_sh(t_cmd * cmd , int *last_status)
 {
-    struct sub_sh* p;
+    t_sub_sh * p;
     int pid;
     int *std[2];
     int sub_status;
 
-    p = (struct sub_sh *)cmd;
+    p = (t_sub_sh  *)cmd;
     pid = fork();
     if (pid == 0)
     {
@@ -273,6 +274,7 @@ int exec_sub_sh(t_cmd * cmd , int *last_status)
         sub_status = new_exec(p->sub_root, 0, last_status);
         exit(sub_status);
     }
+    signal(SIGINT, SIG_IGN);
     waitpid(pid, &sub_status, 0);
     *last_status = WEXITSTATUS(sub_status);
     return (*last_status);
@@ -281,14 +283,12 @@ int exec_sub_sh(t_cmd * cmd , int *last_status)
 int new_exec(t_cmd *cmd, int ref, int *last_status)
 {
     int status, pid;
-    struct new_cmd * p;
+    t_cmd_exec  * p;
 
     status = 0;
-    if (sig != -1)
-        return (sig);
     if (NEW_CMD == cmd->type)
     {
-        p = (struct new_cmd *)cmd;
+        p = (t_cmd_exec  *)cmd;
         if (p)
         {   
             /********************************************** */
@@ -309,22 +309,18 @@ int new_exec(t_cmd *cmd, int ref, int *last_status)
             else {
                 pid = fork();
                 if (pid == 0)
-                {
-                    signal(SIGINT, NULL);
                     exec_new_cmd(cmd, last_status);
-                }
                 else
                 {
                     signal(SIGINT, do_nothing);
                     waitpid(pid, &status, 0);
-                    status = WEXITSTATUS(status);
-                    if (status == SIGINT)
-                       return (printf("SIGINT\n"),130);
-                   
+                    if (WTERMSIG(status) == SIGINT)
+                        status = 130;
+                    else
+                        status = WEXITSTATUS(status);
                 }
             }
-        }
-      
+        }      
     }
     else if (AND == cmd->type)
         status = exec_and(cmd, last_status);

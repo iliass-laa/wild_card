@@ -16,35 +16,12 @@ void *debug_malloc(size_t size)
     return ptr;
 }
 
-int sig;
-
-
-void single_or_double(int *j, int flag)
-{
-    if (flag == '"')
-    {
-        if (*j == SINGLE)
-            *j = SINGLE;
-        else if (*j == DOUBLE)
-            *j = NONE;
-        else
-            *j = DOUBLE;
-    }
-    else if (flag == '\'')
-    {
-        if (*j == DOUBLE)
-            *j = DOUBLE;
-        else if (*j == SINGLE)
-            *j = NONE;
-        else
-            *j = SINGLE;
-    }
-}
+int g_sig;
 
 int check_qoutes(char *s)
 {
     int i;
-    int j;
+    enum ss j;
 
     i = 0;
     j = NONE;
@@ -52,8 +29,24 @@ int check_qoutes(char *s)
     {
         while(s[i])
         {
-            if(s[i] == '"' || s[i] == '\'')
-                single_or_double(&j, s[i]);
+            if(s[i] == '"')
+            {
+                if (j == SINGLE)
+                    j = SINGLE;
+                else if (j == DOUBLE)
+                    j = NONE;
+                else
+                    j = DOUBLE;
+            }
+            if(s[i] == '\''){
+                
+                if (j == DOUBLE)
+                    j = DOUBLE;
+                else if (j == SINGLE)
+                    j = NONE;
+                else
+                    j = SINGLE;
+            }
             i++;
         }
     }
@@ -62,42 +55,32 @@ int check_qoutes(char *s)
 
 void panic(char *str)
 {
-    if (str)
-        ft_putstr_fd(str, 2);
-    if (ft_strcmp("exit\n", str))
-        exit(0);
+    (void)str;
+    // if (str)
+        // dprintf(2, "%s", str);
     exit(1);
 }
 
 
-int execute(t_cmd *cmd)
+void execute(t_cmd *cmd)
 {
     int status;
-    int pid;
     status = 0;
     if (cmd->type == NEW_CMD && is_builtin(cmd))
         status = exec_builtin(cmd);
     else if (cmd->type == NEW_CMD )
     {
-        pid = fork();
-        if (pid == 0)
+        status = fork();
+        if (status == 0)
         {
-            signal (SIGINT, NULL); 
+            // signal (SIGINT, NULL); 
             exec_new_cmd(cmd ,&status);
         }
-        signal(SIGINT, do_nothing);
-        waitpid(pid, &status, 0);
-        if (WEXITSTATUS(status) == SIGINT)
-        {
-            sig = 130;
-            status = 130;
-        }
+        wait(&status);
         // printf("status d'exit:%d\n", status);
     }
     else
         status = new_exec(cmd , NOTHING, &status);
-
-    return status;
 
 }
 
@@ -110,37 +93,34 @@ void parse_nd_exec(char **my_tokens,t_env **dup_env, int *status)
     res = root(my_tokens,dup_env);
     if (!res)
         return;
-    // print_tree(res);
-    // printf("\n");
-    if (sig == -1)
+    if (g_sig == -1)
         *status = new_exec(res, NOTHING, status);
-    // if (sig == -1)
-    //     *status = execute(res);
-    if (sig == 130)
+    if (g_sig == 130)
     {
         *status = 130;
-        sig = -1;
+        g_sig = -1;
     }
-    printf(GRN"exit STATUS :%d\n"CRESET, *status);
+    // printf(GRN"D exit STATUS :%d\n"CRESET, *status);
     free_mynigga(my_tokens);
     free_tree2(res); 
 }
 
+
 void history(char *str)
 {
     if (!str)
-        panic("exit\n");
+        panic("BY\n");
     if (!str || 0 == ft_strlen(str))
         return ;
     if (is_white_str(str))
         return;
     add_history(str);
+
 }
 
-void ff()
-{
-    system("leaks minishell");
-}
+// void ff(){
+//     system("leaks minishell");
+// }
 
 int main(  int ac, char **av, char **env)
 {
@@ -150,20 +130,23 @@ int main(  int ac, char **av, char **env)
     t_env *dup_env;
     int checker ;   
 
-    (void)av;
-    (void)ac;
+    // atexit(ff);
     status = 0;
     dup_env = init_env(env);
     while(1)
     {
         signal(SIGINT, signal_handler);
         signal(SIGQUIT, SIG_IGN);
-        sig = -1;
         str = readline(GRN"depechez-vous!> "CRESET);
-            history(str);
+        history(str);
+        if (g_sig == 1300)
+        {
+            // printf("Status : %d\n", status);
+            status = 1;
+        }
+        g_sig = -1;
         if (str && ft_strlen(str) && _check_str(str) == 0)
         {
-            // signal(SIGQUIT, SIG_DFL);
             my_tokens = fr9_trb7(str);
             checker = _check_tokens(my_tokens);
             if (checker != EXEC && checker != SUB_SH)
@@ -174,9 +157,11 @@ int main(  int ac, char **av, char **env)
             }
             else if (my_tokens)
                 parse_nd_exec(my_tokens, &dup_env, &status);
-            // printf ("SIG :%d\n", sig);
-            // printf ("status AT the very end :%d\n", status);
+            // printf("SIG :%d\n", sig);
+            // printf("status AT the very end :%d\n", status);
         }
         free(str);
     }
+    (void)ac;
+    (void)av;
 }

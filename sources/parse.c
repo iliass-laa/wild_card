@@ -150,6 +150,8 @@ int _check_str(char *s)
             return(error(s, RED), 1);
         if (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == '>')
             return(error(s, RED), 1);
+        // if (s[i] == ')' && s[i + 1] == ')' )
+        //     return(error(NULL, s[i]), 1);
         else
             i++;
     }

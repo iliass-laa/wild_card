@@ -8,12 +8,12 @@
 void treat_left_child(t_cmd *left_cmd, t_execp *sp, int *last_status)
 {
     (void)last_status;
-    t_cmd_exec *left_one;
+    t_cmd_exec  *left_one;
     t_sub_sh *left_sub;
 
     if (left_cmd->type == NEW_CMD)
     {
-        left_one = (t_cmd_exec *)left_cmd;
+        left_one = (t_cmd_exec  *)left_cmd;
         if (sp->node_p->pipe_fd != -1)
             left_one->fd_in =  sp->node_p->pipe_fd;
         left_one->fd_out = sp->p[1];
@@ -52,13 +52,13 @@ int right_child_ispipe(t_cmd *right_cmd , t_execp *sp, int *last_status)
 int treat_right_child(t_cmd* right_cmd, t_execp *sp, int *last_status)
 {
     int status;
-    t_cmd_exec *right_one;
+    t_cmd_exec  *right_one;
     t_sub_sh *right_sub; 
 
     (void)last_status;
     if (right_cmd->type == NEW_CMD)
     {
-        right_one = (t_cmd_exec *)right_cmd;
+        right_one = (t_cmd_exec  *)right_cmd;
         if (sp->node_p->pipe_fd != -1)
             close(sp->node_p->pipe_fd);
         right_one->fd_in = sp->p[0];
@@ -82,7 +82,6 @@ int treat_right_child(t_cmd* right_cmd, t_execp *sp, int *last_status)
 int exec_pipe(t_cmd *cmd, int *last_status)
 {
     t_execp sp;
-    (void)last_status;
 
     if (pipe(sp.p) < 0)
         panic("PIPE FAILED !\n");
@@ -103,6 +102,7 @@ int exec_pipe(t_cmd *cmd, int *last_status)
     }
     close(sp.p[0]);
     close(sp.p[1]);
+    signal(SIGINT, do_nothing);
     waitpid(sp.rpid , &(sp.status), 0);
     wait(0);
     return(sp.status);

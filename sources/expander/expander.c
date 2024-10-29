@@ -58,6 +58,15 @@ static t_split_arg init_spliter(t_split_arg data, char *str)
     return data ;
 }
 
+void print_nodes(t_node *head){
+    
+    while(head)
+    {
+        // printf("str[%s] type[%c]\n",head->str ,head->type);
+        head = head->next;
+    }
+}
+
 t_node *splitArg(char *str)
 {
     t_split_arg dt;
@@ -85,17 +94,16 @@ t_node *splitArg(char *str)
     return (free(dt.token), (dt.head));
 }
 
-char *joiner(char *arg, t_env* env)
+char *joiner(char *arg, t_env* env, int *st)
 {
     char* new;
     char* tmp_new;
     t_node  *head;
     t_node  *tmp;
 
-    if(ft_strchr(arg, '$') == NULL)
-        return arg;
     head = splitArg(arg);
-    mini_expander(&head, env);
+    print_nodes(head);
+    mini_expander(&head, env,st);
     tmp = head;
     new = ft_strdup("");
     while(tmp)
@@ -110,16 +118,17 @@ char *joiner(char *arg, t_env* env)
     return new;
 }
 
-char **expander(char **argv, t_env *env)
+char **expander(char **argv, t_env *env, int *st)
 {
     int i ;
+    int old_len;
+
+    old_len = ft_strslen(argv);
 
     i = -1 ;
     if(!argv || !(*argv))
         return NULL;
-    while(argv[++i]){
-        // printf("argalloc [%p]\n",argv[i]);
-        argv[i] = joiner(argv[i], env);
-    }
+    while(argv[++i])
+        argv[i] = joiner(argv[i], env, st);
     return argv;
 }
